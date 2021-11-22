@@ -1,0 +1,17 @@
+node_modules
+.DS_Store
+
+.env
+!.env.example
+!.env.test
+
+# test coverage
+coverage
+
+# use yarn, not npm
+package-lock.json
+yarn-error.log
+
+.eslintcache
+.vscode
+.vercel
