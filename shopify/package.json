@@ -1,0 +1,16 @@
+{
+	"name": "apollo-shopify",
+	"version": "0.0.1",
+	"description": "Shopify theme for Apollo Neuro",
+	"main": "index.js",
+	"author": "Sanctuary Computer",
+	"license": "NONE",
+	"scripts": {
+		"login": "dotenv shopify login apollo-shopify login",
+		"start": "shopify theme serve",
+		"lint": "shopify theme check"
+	},
+	"dependencies": {
+		"tailwindcss": "^2.2.19"
+	}
+}
