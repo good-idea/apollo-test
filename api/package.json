@@ -1,0 +1,8 @@
+{
+  "name": "apollo-api",
+  "version": "0.0.1",
+  "description": "API functions for Apollo",
+  "main": "index.js",
+  "author": "Sanctuary Computer",
+  "license": "NONE"
+}
