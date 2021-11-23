@@ -6,9 +6,10 @@
 	"author": "Sanctuary Computer",
 	"license": "NONE",
 	"scripts": {
-		"login": "dotenv shopify login apollo-shopify login",
+		"shopify:login": "dotenv shopify login apollo-shopify login",
 		"start": "shopify theme serve",
-		"lint": "shopify theme check"
+		"lint": "shopify theme check",
+		"build": "cp -r theme/* ../dist"
 	},
 	"dependencies": {
 		"tailwindcss": "^2.2.19"

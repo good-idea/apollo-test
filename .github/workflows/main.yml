@@ -1,0 +1,62 @@
+name: Deploy to Production
+on: push
+jobs:
+  build-shopify:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Git Identity
+        run: |
+          git config --local user.email "dev@sanctuary.computer"
+          git config --local user.name "github-actions [bot]"
+
+      # Since we are pushing to another repository (the subtree), we need to provide SSH keys.
+      # This repo has been configured with a GH_PUSH_SECRET_KEY, and its corresponding public
+      # key has been added as a Deploy Key within the apollo-push repo.
+      - name: webfactory/ssh-agent
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.GH_PUSH_SECRET_KEY }}
+
+      - name: get-npm-version
+        uses: martinbeentjes/npm-get-version-action@master
+        with:
+          path: shopify
+
+      - name: Pull latest subtree
+        run: |
+          git subtree pull --prefix dist git@github.com:sanctuarycomputer/apollo-deploy main --squash
+      # Checkout to a clean branch. We won't commit this branch to this repo, it's just a safe place
+      # to stage changes that we will push to the subtree.
+      - name: Branch
+        run: git checkout -b deploy
+
+      # Run our build
+      - name: Build
+        run: yarn build
+
+      # Get a diff
+      - name: Diff
+        id: dist_diff
+        # This command outputs a single-line string with the names of all files changed
+        # within the dist directory
+        run: |
+          git diff --name-only | grep '^dist' | xargs
+          echo "::set-output name=diff_files::$(git diff --name-only | grep '^dist' | xargs)" 
+
+     # If our dist folder has changes, add them, make a commit, and push to the subtree.
+      - name: Build & Deploy
+        if: steps.dist_diff.outputs.diff_files
+        run: |
+          git add dist -f
+          git commit -m '[skip-ci] chore(shopify): build & deploy ${{ steps.package-version.outputs.current-version }}'
+          git subtree push --prefix dist git@github.com:sanctuarycomputer/apollo-deploy main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
+
+

@@ -6,8 +6,9 @@
 	"author": "Sanctuary Computer",
 	"license": "NONE",
 	"scripts": {
-		"setup": "yarn install && brew tap shopify/shopify && brew install shopify-cli && yarn login",
-		"login": "yarn workspace apollo-shopify login --store $STORE_DOMAIN"
+		"setup": "yarn install && brew tap shopify/shopify && brew install shopify-cli && yarn shopify:login",
+		"shopify:login": "yarn workspace apollo-shopify shopify:login --store $STORE_DOMAIN",
+		"build": "yarn workspace apollo-shopify build"
 	},
 	"workspaces": [
 		"api",
