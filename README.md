@@ -12,6 +12,19 @@ See more specific documentation within each workspace:
 - [`shopify`](./shopify/README.md): the Shopify theme
 - [`api`](./api/README.md): Serverless API functions
 
+<!-- toc -->
+
+- [Getting Started](#getting-started)
+  - [Requirements](#requirements)
+  - [Installation](#installation)
+- [Local Development](#local-development)
+  - [General](#general)
+- [Architecture](#architecture)
+  - [Deployment](#deployment)
+  - [Tools](#tools)
+
+<!-- tocstop -->
+
 ## Getting Started
 
 ### Requirements
@@ -47,6 +60,20 @@ This monorepo contains several modules:
 - [`theme`](./theme/README.md): The Next.js build for the documentation portal.
 - [`api`](./api/README.md): The Sanity configuration for Swell's public sites.
 - [`scripts`](./scripts/README.md): Scripts for general development purposes.
+
+### Deployment
+
+This project uses Shopify's [Github integration](https://shopify.dev/themes/tools/github) to deploy changes to the theme. Shopify requires that a linked repository fits the structure of a theme - all directories like `layout`, `assets`, `snippets` and so on must be at the root of the repository. To allow us to have a repository structured to better suit the project, we use a [git subtree](https://www.atlassian.com/git/tutorials/git-subtree) - which is a [linked repository](https://www.github.com/sanctuary-computer/apollo-deploy) that contains the compiled theme files.
+
+**tl;dr**: just set up PRs that merge to `main` and the rest will be taken care of!
+
+When your changes are merged into `main`, the following happens in a [Github action](./.github/workflows/main.yml):
+
+1. A separate branch named `deploy` is created. This is used as a staging branch only, it will not be committed to the repo.
+2. Upstream changes from the subtree repository are pulled into `dist`
+3. Build scripts are run, compiling `./shopify/theme` to `dist`
+4. If there are no resulting changes within `dist`, the script exits.
+5. If there are, those changes are committed, then pushed to the subtree. Commit messages will include the latest `package.json` version for the theme workspace.
 
 ### Tools
 

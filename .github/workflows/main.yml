@@ -1,7 +1,62 @@
-name: Deploy to Production
-on: push
+name: Deploy 
+on:
+  pull_request:
+    types: closed
+    branches:
+      - main
 jobs:
-  build-shopify:
+  install:
+    name: Install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/cache@v2
+        if: ${{ env.CI_SKIP == 'false' }}
+        with:
+          path: |
+            node_modules
+            **/node_modules
+          key: ${{ runner.os }}-modules-${{ hashFiles('./yarn.lock') }}
+
+  version:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: install
+    name: Generate new version & update changelogs
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.SEMANTIC_RELEASE_GH_TOKEN }}
+
+      - uses: mstachniuk/ci-skip@v1
+        with:
+          commit-filter: 'skip-ci'
+
+      - name: Git Identity
+        run: |
+          git config --local user.email "dev@sanctuary.computer"
+          git config --local user.name "github-actions [bot]"
+
+      ## Does not actually release to NPM, but will:
+      #  - update package.json versions
+      #  - update changelogs
+      - name: Semantic Release
+        if: ${{ env.CI_SKIP == 'false' }}
+        run: |
+          npm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}" 
+          yarn release
+        env:
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  build:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+    needs: version
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
@@ -9,6 +64,14 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
+
+      - uses: actions/cache@v2
+        if: ${{ env.CI_SKIP == 'false' }}
+        with:
+          path: |
+            node_modules
+            **/node_modules
+          key: ${{ runner.os }}-modules-${{ hashFiles('./yarn.lock') }}
 
       - name: Git Identity
         run: |

@@ -9,7 +9,8 @@
 		"shopify:login": "dotenv shopify login apollo-shopify login",
 		"start": "shopify theme serve",
 		"lint": "shopify theme check",
-		"build": "cp -r theme/* ../dist"
+		"build": "cp -r theme/* ../dist",
+		"test": "echo 'no tests set up'"
 	},
 	"dependencies": {
 		"tailwindcss": "^2.2.19"
