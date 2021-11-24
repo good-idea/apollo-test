@@ -6,6 +6,7 @@
 	"author": "Sanctuary Computer",
 	"license": "NONE",
 	"scripts": {
-		"test": "echo 'no tests set up'"
+		"test": "echo 'no tests set up'",
+		"release": "multi-semantic-release"
 	}
 }

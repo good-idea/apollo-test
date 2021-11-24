@@ -10,7 +10,7 @@
 		"start": "shopify theme serve",
 		"lint": "shopify theme check",
 		"build": "cp -r theme/* ../dist",
-		"test": "echo 'no tests set up'"
+		"test": "echo 'no tests set up!'"
 	},
 	"dependencies": {
 		"tailwindcss": "^2.2.19"

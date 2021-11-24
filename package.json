@@ -10,6 +10,7 @@
 		"shopify:login": "yarn workspace apollo-shopify shopify:login --store $STORE_DOMAIN",
 		"test": "yarn workspaces run test",
 		"build": "yarn workspace apollo-shopify build",
+		"release": "yarn multi-semantic-release",
 		"prepare": "husky install"
 	},
 	"workspaces": [
@@ -37,6 +38,7 @@
 		"typescript": "^4.5.2"
 	},
 	"lint-staged": {
+		"**/*.{js,jsx,ts,tsx,yml,md}": "prettier --write",
 		"**/*.md": "markdown-toc-gen insert",
 		"*.ts": "eslint --cache",
 		"*.tsx": "eslint --cache"
