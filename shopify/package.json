@@ -1,18 +1,35 @@
 {
-	"name": "apollo-shopify",
-	"version": "0.0.1",
-	"description": "Shopify theme for Apollo Neuro",
-	"main": "index.js",
-	"author": "Sanctuary Computer",
-	"license": "NONE",
-	"scripts": {
-		"shopify:login": "dotenv shopify login apollo-shopify login",
-		"start": "shopify theme serve",
-		"lint": "shopify theme check",
-		"build": "cp -r theme/* ../dist",
-		"test": "echo 'no tests set up!'"
-	},
-	"dependencies": {
-		"tailwindcss": "^2.2.19"
-	}
+  "name": "apollo-shopify",
+  "version": "0.0.1",
+  "description": "Shopify theme for Apollo Neuro",
+  "main": "index.js",
+  "author": "Sanctuary Computer",
+  "license": "NONE",
+  "scripts": {
+    "shopify:login": "source .env && shopify login --store $STORE_DOMAIN",
+    "start": "cd theme && shopify theme serve",
+    "lint": "shopify theme check",
+    "build": "cp -r theme/* ../dist",
+    "test": "echo 'no tests set up!'",
+    "watch:js": "NODE_ENV=development webpack --config webpack.config.js --watch",
+    "build:js": "NODE_ENV=production webpack --config webpack.config.js",
+    "watch:css": "watch 'yarn run build:css' ./theme/styles",
+    "build:css": "postcss theme/styles/main.css -o theme/assets/main.min.css"
+  },
+  "dependencies": {
+    "tailwindcss": "^2.2.19"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.0",
+    "cssnano": "^5.0.12",
+    "postcss": "^8.4.4",
+    "postcss-cli": "^9.0.2",
+    "postcss-import": "^14.0.2",
+    "postcss-nesting": "^10.0.2",
+    "source-map-loader": "^3.0.0",
+    "ts-loader": "^9.2.6",
+    "tsc-watch": "^4.5.0",
+    "webpack": "^5.64.3",
+    "webpack-cli": "^4.9.1"
+  }
 }

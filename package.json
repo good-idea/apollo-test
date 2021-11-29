@@ -1,46 +1,49 @@
 {
-	"name": "apollo-root",
-	"version": "0.0.1",
-	"description": "Root package.json for Apollo",
-	"repository": "git@github.com:sanctuarycomputer/apollo",
-	"author": "Sanctuary Computer",
-	"license": "NONE",
-	"scripts": {
-		"setup": "yarn install && brew tap shopify/shopify && brew install shopify-cli && yarn shopify:login",
-		"shopify:login": "yarn workspace apollo-shopify shopify:login --store $STORE_DOMAIN",
-		"test": "yarn workspaces run test",
-		"build": "yarn workspace apollo-shopify build",
-		"release": "yarn multi-semantic-release",
-		"prepare": "husky install"
-	},
-	"workspaces": [
-		"api",
-		"shopify"
-	],
-	"private": true,
-	"devDependencies": {
-		"@commitlint/config-conventional": "^15.0.0",
-		"@qiwi/multi-semantic-release": "^3.17.0",
-		"@semantic-release/changelog": "^6.0.1",
-		"@semantic-release/commit-analyzer": "^9.0.2",
-		"@semantic-release/git": "^10.0.1",
-		"@semantic-release/github": "^8.0.2",
-		"commitlint": "^15.0.0",
-		"dotenv": "^10.0.0",
-		"dotenv-cli": "^4.1.0",
-		"eslint": "^8.3.0",
-		"eslint-config-prettier": "^8.3.0",
-		"eslint-plugin-prettier": "^4.0.0",
-		"husky": "^7.0.4",
-		"lint-staged": "^12.1.2",
-		"markdown-toc-gen": "^1.0.1",
-		"prettier": "^2.4.1",
-		"typescript": "^4.5.2"
-	},
-	"lint-staged": {
-		"**/*.{js,jsx,ts,tsx,yml,md}": "prettier --write",
-		"**/*.md": "markdown-toc-gen insert",
-		"*.ts": "eslint --cache",
-		"*.tsx": "eslint --cache"
-	}
+  "name": "apollo-root",
+  "version": "0.0.1",
+  "description": "Root package.json for Apollo",
+  "repository": "git@github.com:sanctuarycomputer/apollo",
+  "author": "Sanctuary Computer",
+  "license": "NONE",
+  "scripts": {
+    "setup": "yarn install && brew tap shopify/shopify && brew install shopify-cli && cp ./shopify/.env.example ./shopify.env && yarn shopify:login",
+    "shopify:login": "cd shopify && yarn shopify:login",
+    "test": "yarn workspaces run test",
+    "build": "yarn workspace apollo-shopify build",
+    "release": "yarn multi-semantic-release",
+    "prepare": "husky install"
+  },
+  "workspaces": [
+    "api",
+    "shopify"
+  ],
+  "private": true,
+  "devDependencies": {
+    "@commitlint/config-conventional": "^15.0.0",
+    "@qiwi/multi-semantic-release": "^3.17.0",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/commit-analyzer": "^9.0.2",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^8.0.2",
+    "@typescript-eslint/eslint-plugin": "^5.5.0",
+    "@typescript-eslint/parser": "^5.5.0",
+    "commitlint": "^15.0.0",
+    "dotenv": "^10.0.0",
+    "eslint": "^8.3.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.1.2",
+    "markdown-toc-gen": "^1.0.1",
+    "prettier": "^2.5.0",
+    "tsc-watch": "^4.5.0",
+    "tslib": "^2.3.1",
+    "typescript": "^4.5.2"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx,yml,md,json}": "prettier --write",
+    "**/*.md": "markdown-toc-gen insert",
+    "*.ts": "eslint --cache",
+    "*.tsx": "eslint --cache"
+  }
 }
