@@ -24,6 +24,7 @@ jobs:
   version:
     runs-on: ubuntu-latest
     needs: install
+    if: github.ref == 'refs/heads/main'
     name: Generate new version & update changelogs
     steps:
       - uses: mstachniuk/ci-skip@v1
